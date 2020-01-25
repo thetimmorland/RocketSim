@@ -122,7 +122,14 @@ const simulate = state => {
   }
 
   // build object to send to server:
-  const inputData = {}
+  const inputData = {};
+  for(const factor of state) {
+    const inputs = {};
+    for(const input of factor.inputs) {
+      inputs[input.name] = input.value;
+    }
+    inputData[factor.header] = inputs;
+  }
 
   // send to server to simulate
   fetch("http://localhost:5000/", {
