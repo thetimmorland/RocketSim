@@ -108,7 +108,7 @@ const transformToPrefferedFormat = structure => {
 function App() {
   return (
     <div className="App">
-      {inputsStructure_incomplete_manual.map(structure => <InputFactors key={structure.header} {...structure}/>)}\
+      {inputsStructure_incomplete_manual.map(structure => <InputFactors key={structure.header} {...structure}/>)}
     </div>
   );
 }
