@@ -27,8 +27,10 @@ rocketSchema = Schema({
       },
 })
 
-@app.route('/', methods = ['GET'])
-def rocketSim():
+
+
+@app.route('/', methods = ['POST'])
+def rocket_sim():
       rocket = rocketSchema.validate(request.json)
       return jsonify(content)
 
