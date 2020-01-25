@@ -11,6 +11,8 @@ setup(name='rsim-backend',
       packages=['rsim-backend'],
       install_requires=[
             'flask',
+            'numpy',
             'schema',
+            'scipy',
       ],
-      )
+)
