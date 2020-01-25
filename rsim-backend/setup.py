@@ -8,9 +8,8 @@ setup(name='rsim-backend',
       author='',
       author_email='',
       url='',
-      packages=[
-          'distutils',
-          'distutils.command',
-          'flask',
+      packages=['rsim-backend'],
+      install_requires=[
+            'flask',
       ],
       )
