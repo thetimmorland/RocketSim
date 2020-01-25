@@ -22,7 +22,10 @@ export default function InputFactors(props) {
         backgroundColor: "grey",
     }}>
         <h1>{props.header}</h1>
-        {props.inputs.map(input => <InputSlider key={input.name} {...input} setInput={setInput}/>)}
+        {props.inputs.map(input =>
+          input.name !== "material"
+            ? <InputSlider key={input.name} {...input} setInput={setInput}/>
+            : <p>Drop Down</p>)}
     </div>
   );
 }

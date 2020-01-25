@@ -4,7 +4,7 @@ import './App.css';
 import InputFactors from "./InputFactors";
 import { Button } from '@material-ui/core';
 
-const inputsStructure_incomplete_manual = [
+const inputsStructure_manual = [
   {
     header: "body",
     inputs: [
@@ -20,91 +20,99 @@ const inputsStructure_incomplete_manual = [
       {
         name: "mass",
       },
+      {
+        name: "material",
+      },
     ],
   },
+  {
+    header: "fins",
+    inputs: [
+      {
+        name: "cant",
+      },
+      {
+        name: "count",
+      },
+      {
+        name: "height",
+      },
+      {
+        name: "mass",
+      },
+      {
+        name: "material",
+      },
+      {
+        name: "sweep",
+      },
+    ],
+  },
+  {
+    header: "variableMass",
+    inputs: [
+      {
+        name: "distanceFromTip",
+      },
+      {
+        name: "mass",
+      },
+    ],
+  },
+  {
+    header: "motor",
+    inputs: [
+      {
+        name: "impulse",
+      },
+      {
+        name: "mass",
+      },
+    ],
+  },
+  {
+    header: "noseCone",
+    inputs: [
+      {
+        name: "length",
+      },
+      {
+        name: "mass",
+      },
+      {
+        name: "material",
+      },
+    ],
+  },
+  
 ];
 
+/*
 const fromReadMe = {
-  "body": {
-    "diameter": 0.04,
-    "length": 0.4,
-    "mass": 0.01
+  'body': {
+        'diameter': positiveFloat,
+        'length': positiveFloat,
+        'mass': positiveFloat,
+        'material': validMaterial,
+  }, 'fins': {
+        'cant': positiveFloat,
+        'count': positiveFloat,
+        'height': positiveFloat,
+        'mass': positiveFloat,
+        'material': validMaterial,
+        'sweep': positiveFloat,
+  }, 'variableMass': {
+        'distanceFromTip': positiveFloat,
+        'mass': positiveFloat,
+  }, 'motor' : {
+        'impulse': positiveFloat,
+        'mass': positiveFloat,
+  }, 'noseCone': {
+        'length': positiveFloat,
+        'mass': positiveFloat,
+        'material': validMaterial,
   },
-  "fins": {
-    "sweep": 39.8,
-    "count": 3,
-    "height": 0.03,
-    "mass": 0.02,
-    "sweep": 0.025
-  },
-  "variableMass": {
-    "distanceFromTip": 0.2,
-    "mass": 0.01
-  },
-  "motor": {
-    "impulse": 15,
-    "mass": 0.09
-  },
-  "noseCone": {
-    "length": 0.06,
-    "mass": 0.012
-  }
 };
-/*
-const transformToPrefferedFormat = structure => {
-  result = [];
-  for(const header in structure) {
-    const names = structure[header];
-    const inputs = [];
-    for(const name in names) {
-      inputs.push({
-        name,
-        min: undefined,
-        step: undefined,
-        max: undefined,
-        value: names[name],
-      })
-    }
-    result.push({
-      header,
-      inputs, 
-    })
-  }
-}
-*/
-/*
-{
-	'body': {
-		'length',
-		'diameter',
-		'mass',
-	},
-
-	'fins': {
-		// modeling fins as trapazoids for now
-		'count',
-		'cant,
-		'height',
-		'sweep',
-		'mass',
-	},
-
-	'noseCone': {
-		// modeling nose cone as triangular cone
-		'length',
-		'mass',
-	},
-
-	'motor': {
-		'impulse',
-		'mass',
-	}
-
-	massVariable':{
-		'msss',
-		'distanceFromTip',
-	}
-}
 */
 
 const simulate = state => {
@@ -123,10 +131,10 @@ const simulate = state => {
   })
   .then(res => res.json())
   .then(res => console.log(res));
-}
+};
 
 export default function App() {
-  const [state, setState] = React.useState(inputsStructure_incomplete_manual);
+  const [state, setState] = React.useState(inputsStructure_manual);
   const setInputFactor = factor => {
     const newState = [
       ...state,
