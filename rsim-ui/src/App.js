@@ -68,6 +68,9 @@ const inputsStructure_manual = [
       {
         name: "mass",
       },
+      {
+        name: "burnTime",
+      },
     ],
   },
   {
