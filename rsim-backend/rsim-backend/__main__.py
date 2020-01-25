@@ -42,28 +42,15 @@ rocketSchema = Schema({
 }, ignore_extra_keys=True)
 
 def bodyDragCoefficient(body):
-      return body.diameter * body.length * dragCoefficients[body.material]
+      return body['diameter'] * body['length'] * dragCoefficients[body['material']]
 
 def finsDragCoefficient(fins):
-      return 2 * fins.count * fins.height**2 * math.sin(fins.sweep) * dragCoefficients[fins.material]
+      return 2 * fins['count'] * fins['height']**2 * math.sin(fins['sweep']) * \
+            dragCoefficients[fins['material']]
 
 def noseConeDragCoefficient(radius, height, material):
-      return math.pi * radius * math.sqrt(height**2 + r**2) * dragCoefficients[material]
+      return math.pi * radius * math.sqrt(height**2 + radius**2) * dragCoefficients[material]
 
-
-def netDrag(rocket, velocity):
-      airDensity = 1.225
-      netDragCoeffecient = sum([
-            bodyDragCoefficient(rocket['body']),
-            finsDragCoeffecient(rocket['fins']),
-            noseConeDragCoefficient(
-                  rocket['body']['diameter'] / 2,
-                  rocket['noseCone']['length'],
-                  rocket['noseCone']['material'],
-            )
-      ])
-
-      return airDensity * velocity**2 * netDragCoefficient / 2
 
 def initalNetMass(rocket):
       return sum([rocket['body']['mass'],
@@ -74,18 +61,34 @@ def initalNetMass(rocket):
 def netMass(rocket, time):
       return initalNetMass(rocket) - rocket['motor']['mass'] - time / rocket['motor']['burnTime']
 
+def accelThrust(rocket, time):
+      standardGravity = 9.81
 
+      return rocket['motor']['impulse'] * standardGravity * \
+            math.log(initalNetMass(rocket) / netMass(rocket, time))
 
+def accelDrag(rocket, velocity):
+      airDensity = 1.225
+
+      netDragCoefficient = sum([
+            bodyDragCoefficient(rocket['body']),
+            finsDragCoefficient(rocket['fins']),
+            noseConeDragCoefficient(
+                  rocket['body']['diameter'] / 2,
+                  rocket['noseCone']['length'],
+                  rocket['noseCone']['material'],
+            )
+      ])
+
+      return airDensity * velocity**2 * netDragCoefficient / 2
 
 @app.route('/', methods = ['POST'])
 def rocket_sim():
       rocket = rocketSchema.validate(request.json)
 
       def burnModel(v, t):
-            standardGravity = 9.81
 
-            dvdt = rocket['motor']['impulse'] * standardGravity * \
-                  math.log(initalNetMass(rocket) / netMass(rocket, t))
+            dvdt = accelThrust(rocket, t) - accelDrag(rocket, v)
 
             return dvdt
 
