@@ -1,5 +1,7 @@
 # Input Variables
 
+note: all inputs use SI units, eg meters, kilograms, degrees, newton seconds
+
 ```
 {
   "body": {
