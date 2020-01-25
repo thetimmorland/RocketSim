@@ -14,6 +14,7 @@ dragCoefficients = {
       'wood': 0.4,
 }
 
+positiveInt = And(int, lambda n: n > 0)
 positiveFloat = And(Use(float), lambda n: n > 0)
 validMaterial = And(Use(str), lambda s:
                     s in dragCoefficients.keys())
@@ -25,7 +26,7 @@ rocketSchema = Schema({
             'mass': positiveFloat,
             'material': validMaterial,
       }, 'fins': {
-            'count': positiveFloat,
+            'count': positiveInt,
             'height': positiveFloat,
             'mass': positiveFloat,
             'material': validMaterial,
@@ -59,7 +60,7 @@ def initalNetMass(rocket):
                   rocket['noseCone']['mass']])
 
 def netMass(rocket, time):
-      return initalNetMass(rocket) - rocket['motor']['mass'] - time / rocket['motor']['burnTime']
+      return initalNetMass(rocket) - rocket['motor']['mass'] * time / rocket['motor']['burnTime']
 
 def accelThrust(rocket, time):
       standardGravity = 9.81
@@ -92,7 +93,7 @@ def rocket_sim():
 
             return dvdt
 
-      t = np.linspace(0, 20)
+      t = np.linspace(0, rocket['motor']['burnTime'])
       v = odeint(burnModel, 0, t)
 
       t = t.tolist()
