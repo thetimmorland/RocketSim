@@ -161,10 +161,11 @@ export default function App() {
   };
   console.log("state:");
   console.log(state);
+
   return (
     <div className="App">
       {state.map(structure =>
-        <InputFactors key={structure.header} {...structure}
+        <InputFactors key={structure.header} className={structure.header} {...structure}
           setInputFactor={setInputFactor}/>)}
       <Button onClick={() => simulate(state)}>Simulate!</Button>
     </div>

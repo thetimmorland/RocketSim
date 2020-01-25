@@ -19,7 +19,7 @@ export default function InputFactors(props) {
     props.setInputFactor(newFactor);
   };
   return (
-    <div style={{
+    <div className={props.className} style={{
         backgroundColor: "white",
     }}>
         <h1>{props.header}</h1>
