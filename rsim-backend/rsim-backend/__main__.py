@@ -1,40 +1,44 @@
 from flask import Flask, request, jsonify
 from schema import Schema, And, Use
-from math import log
+import math
 import os
 
 app = Flask(__name__)
 
-materials = [
-      'aluminum',
-      'wood',
-      'cardboard',
-      'abs',
-]
+dragCoefficients = {
+      'abs': 0.25,
+      'aluminum': 1.4,
+      'cardboard': 0.072,
+      'wood': 0.4,
+}
+
+positiveFloat = And(Use(float), lambda n: n > 0)
+validMaterial = And(Use(str), lambda s:
+                    s in dragCoefficients.keys())
 
 rocketSchema = Schema({
       'body': {
-            'diameter': int,
-            'length': int,
-            'mass': int,
-            'material': And(Use(str), lambda m: m in materials)
+            'diameter': positiveFloat,
+            'length': positiveFloat,
+            'mass': positiveFloat,
+            'material': validMaterial,
       }, 'fins': {
-            'sweep': int,
-            'count': int,
-            'height': int,
-            'mass': int,
-            'cant': int,
-            'material': And(Use(str), lambda m: m in materials)
+            'cant': positiveFloat, # angle in degrees
+            'count': positiveFloat,
+            'height': positiveFloat,
+            'mass': positiveFloat,
+            'material': validMaterial,
+            'sweep': positiveFloat,
       }, 'variableMass': {
-            'distanceFromTip': int,
-            'mass': int,
+            'distanceFromTip': positiveFloat,
+            'mass': positiveFloat,
       }, 'motor' : {
-            'impulse': int,
-            'mass': int,
+            'impulse': positiveFloat,
+            'mass': positiveFloat,
       }, 'noseCone': {
-            'length': int,
-            'mass': int,
-            'material': And(Use(str), lambda m: m in materials)
+            'length': positiveFloat,
+            'mass': positiveFloat,
+            'material': validMaterial,
       },
 })
 
@@ -42,7 +46,14 @@ rocketSchema = Schema({
 @app.route('/', methods = ['POST'])
 def rocket_sim():
       rocket = rocketSchema.validate(request.json)
-      return jsonify(output)
+
+      # bodyDrag = rocket.body.diameter * rocket.body.length * \
+      #       dragCoeffiecients[rocket.body.material]
+      # finDrag = 2 * rocket.fin.count * rocket.fin.height**2 * \
+      #      math.sin
+
+
+      return jsonify(rocket)
 
 
 if __name__ == '__main__':
