@@ -219,7 +219,7 @@ export default function App() {
     {i: 'motor',        x: 0, y: 0, w: 1, h: 1, static: true},
     {i: 'noseCone',     x: 2, y: 0, w: 1, h: 1, static: true}
   ];
-  const [state, setState] = React.useState(inputsStructure_preFilled);
+  const [state, setState] = React.useState(inputsStructure_manual);
   const setInputFactor = factor => {
     const newState = [
       ...state,
