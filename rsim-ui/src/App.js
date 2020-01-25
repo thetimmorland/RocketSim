@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 
 import InputFactors from "./InputFactors";
+import { Button } from '@material-ui/core';
 
 const inputsStructure_incomplete_manual = [
   {
@@ -61,7 +62,7 @@ const transformToPrefferedFormat = structure => {
         min: undefined,
         step: undefined,
         max: undefined,
-        defaultValue: names[name],
+        value: names[name],
       })
     }
     result.push({
@@ -105,12 +106,46 @@ const transformToPrefferedFormat = structure => {
 	}
 }
 */
-function App() {
-  return (
-    <div className="App">
-      {inputsStructure_incomplete_manual.map(structure => <InputFactors key={structure.header} {...structure}/>)}
-    </div>
-  );
+
+const simulate = state => {
+  // error checking:
+  if(false) {
+    alert("Uh oh!\nThere seems to be a problem with your input data!");
+  }
+
+  // build object to send to server:
+  const inputData = {}
+
+  // send to server to simulate
+  fetch("http://localhost:5000/", {
+    method: "POST",
+    body: JSON.stringify(inputData),
+  })
+  .then(res => res.json())
+  .then(res => console.log(res));
 }
 
-export default App;
+export default function App() {
+  const [state, setState] = React.useState(inputsStructure_incomplete_manual);
+  const setInputFactor = factor => {
+    const newState = [
+      ...state,
+    ];
+    for(const factI in newState) {
+      if(newState[factI].header === factor.header) {
+        newState[factI] = factor;
+      }
+    }
+    setState(newState);
+  };
+  console.log("state:");
+  console.log(state);
+  return (
+    <div className="App">
+      {state.map(structure =>
+        <InputFactors key={structure.header} {...structure}
+          setInputFactor={setInputFactor}/>)}
+      <Button onClick={() => simulate(state)}>Simulate!</Button>
+    </div>
+  );
+};
