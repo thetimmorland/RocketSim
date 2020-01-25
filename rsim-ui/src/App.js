@@ -12,6 +12,7 @@ import {XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries
 const inputsStructure_manual = [
   {
     header: "body",
+    title: "Body",
     inputs: [
       {
         name: "diameter",
@@ -32,6 +33,7 @@ const inputsStructure_manual = [
   },
   {
     header: "fins",
+    title: "Fins",
     inputs: [
       {
         name: "cant",
@@ -55,6 +57,7 @@ const inputsStructure_manual = [
   },
   {
     header: "variableMass",
+    title: "Variable Mass",
     inputs: [
       {
         name: "distanceFromTip",
@@ -66,6 +69,7 @@ const inputsStructure_manual = [
   },
   {
     header: "motor",
+    title: "Motor",
     inputs: [
       {
         name: "impulse",
@@ -80,6 +84,7 @@ const inputsStructure_manual = [
   },
   {
     header: "noseCone",
+    title: "Nose Cone",
     inputs: [
       {
         name: "length",
