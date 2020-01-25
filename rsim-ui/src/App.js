@@ -134,6 +134,9 @@ const simulate = state => {
   // send to server to simulate
   fetch("http://localhost:5000/", {
     method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
     body: JSON.stringify(inputData),
   })
   .then(res => res.json())

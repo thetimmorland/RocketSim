@@ -1,6 +1,7 @@
 import React from 'react';
 
 import InputSlider from "./InputSlider";
+import ListPicker from "./ListPicker";
 
 export default function InputFactors(props) {
   const setInput = input => {
@@ -19,13 +20,13 @@ export default function InputFactors(props) {
   };
   return (
     <div style={{
-        backgroundColor: "grey",
+        backgroundColor: "white",
     }}>
         <h1>{props.header}</h1>
         {props.inputs.map(input =>
           input.name !== "material"
             ? <InputSlider key={input.name} {...input} setInput={setInput}/>
-            : <p>Drop Down</p>)}
+            : <ListPicker key={input.name} {...input} setInput={setInput}/>)}
     </div>
   );
 }
