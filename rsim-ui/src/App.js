@@ -120,9 +120,9 @@ const fromReadMe = {
 
 const simulate = (state, setResults) => {
   // error checking:
-  if(false) {
-    alert("Uh oh!\nThere seems to be a problem with your input data!");
-  }
+  // if(false) {
+  //   alert("Uh oh!\nThere seems to be a problem with your input data!");
+  // }
 
   // build object to send to server:
   const inputData = {};
@@ -146,6 +146,9 @@ const simulate = (state, setResults) => {
   .then(res => {
     console.log(res);
     setResults(res);
+  })
+  .catch(err => {
+    alert("Uh oh!\nIt looks like you are missing an input!");
   });
 };
 
