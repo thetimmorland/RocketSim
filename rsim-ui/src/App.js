@@ -118,7 +118,7 @@ const fromReadMe = {
 };
 */
 
-const simulate = state => {
+const simulate = (state, setResults) => {
   // error checking:
   if(false) {
     alert("Uh oh!\nThere seems to be a problem with your input data!");
@@ -143,7 +143,10 @@ const simulate = state => {
     body: JSON.stringify(inputData),
   })
   .then(res => res.json())
-  .then(res => console.log(res));
+  .then(res => {
+    console.log(res);
+    setResults(res);
+  });
 };
 
 export default function App() {
@@ -162,12 +165,14 @@ export default function App() {
   console.log("state:");
   console.log(state);
 
+  const [results, setResults] = React.useState(12);
+
   return (
     <div className="App">
       {state.map(structure =>
         <InputFactors key={structure.header} className={structure.header} {...structure}
           setInputFactor={setInputFactor}/>)}
-      <Button onClick={() => simulate(state)}>Simulate!</Button>
+      <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
     </div>
   );
 };
