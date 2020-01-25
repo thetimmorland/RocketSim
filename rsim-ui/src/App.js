@@ -165,7 +165,7 @@ export default function App() {
   console.log("state:");
   console.log(state);
 
-  const [results, setResults] = React.useState(12);
+  const [results, setResults] = React.useState(undefined);
 
   return (
     <div className="App">
