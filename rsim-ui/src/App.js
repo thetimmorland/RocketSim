@@ -164,11 +164,11 @@ const Results = () =>  {
 };
 
 
-const simulate = state => {
+const simulate = (state, setResults) => {
   // error checking:
-  if(false) {
-    alert("Uh oh!\nThere seems to be a problem with your input data!");
-  }
+  // if(false) {
+  //   alert("Uh oh!\nThere seems to be a problem with your input data!");
+  // }
 
   // build object to send to server:
   const inputData = {};
@@ -189,7 +189,13 @@ const simulate = state => {
     body: JSON.stringify(inputData),
   })
   .then(res => res.json())
-  .then(res => console.log(res));
+  .then(res => {
+    console.log(res);
+    setResults(res);
+  })
+  .catch(err => {
+    alert("Uh oh!\nIt looks like you are missing an input!");
+  });
 };
 
 export default function App() {
@@ -215,6 +221,8 @@ export default function App() {
   console.log("state:");
   console.log(state);
 
+  const [results, setResults] = React.useState(undefined);
+
   return (
     <div className="App">
     <GridLayout className="layout" layout={layout} cols={3} rowHeight={350} width={window.innerWidth} height={window.innerHeight}>
@@ -223,7 +231,7 @@ export default function App() {
         <InputFactors className={structure.header} {...structure}
           setInputFactor={setInputFactor}/>        </div>)}
     </GridLayout>
-      <Button onClick={() => simulate(state)}>Simulate!</Button>
+      <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
       {/*<Results/>*/}
     </div>
   );
