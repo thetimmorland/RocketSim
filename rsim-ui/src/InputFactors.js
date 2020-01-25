@@ -19,9 +19,7 @@ export default function InputFactors(props) {
     props.setInputFactor(newFactor);
   };
   return (
-    <div className={props.className} style={{
-        backgroundColor: "white",
-    }}>
+    <div className={props.className}>
         <h1>{props.header}</h1>
         {props.inputs.map(input =>
           input.name !== "material"

@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: #EEEEEE;
 }
 
 .App-logo {
@@ -35,4 +36,12 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.layout * {
+
+}
+
+.Results {
+  background-color: #ffffff;
 }
