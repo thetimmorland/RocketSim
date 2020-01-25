@@ -95,6 +95,8 @@ const inputsStructure_manual = [
 
 ];
 
+const inputsStructure_preFilled = [{"className":"body","header":"body","inputs":[{"name":"diameter","value":34},{"name":"length","value":46},{"name":"mass","value":59},{"name":"material","value":"cardboard"}]},{"className":"fins","header":"fins","inputs":[{"name":"cant","value":15},{"name":"count","value":7},{"name":"height","value":29},{"name":"mass","value":52},{"name":"material","value":"aluminum"},{"name":"sweep","value":14}]},{"className":"variableMass","header":"variableMass","inputs":[{"name":"distanceFromTip","value":18},{"name":"mass","value":10}]},{"className":"motor","header":"motor","inputs":[{"name":"impulse","value":53},{"name":"mass","value":72},{"name":"burnTime","value":86}]},{"className":"noseCone","header":"noseCone","inputs":[{"name":"length","value":33},{"name":"mass","value":26},{"name":"material","value":"abs"}]}];
+
 /*
 const fromReadMe = {
   'body': {
@@ -122,7 +124,7 @@ const fromReadMe = {
   },
 };
 */
-const Results = () =>  {
+const Results = props =>  {
     const data = [
       {x: 0, y: 8},
       {x: 1, y: 5},
@@ -148,9 +150,9 @@ const Results = () =>  {
           <HorizontalGridLines />
           <XAxis title="Time (s)"/>
           <YAxis title="Altitude"/>
-          <LineSeries data={data} />
-          <LineSeries data={data} />
-          <LineSeries data={data} />
+          <LineSeries data={props.data} />
+          <LineSeries data={props.data} />
+          <LineSeries data={props.data} />
         </XYPlot>
       </div>
       <div key="b" className="Results">
@@ -163,6 +165,10 @@ const Results = () =>  {
   )
 };
 
+const reformatRes = res => res.map(dataPoint => ({
+  x: dataPoint[0],
+  y: dataPoint[1][0],
+}));
 
 const simulate = (state, setResults) => {
   // error checking:
@@ -191,11 +197,13 @@ const simulate = (state, setResults) => {
   .then(res => res.json())
   .then(res => {
     console.log(res);
-    setResults(res);
+    setResults(reformatRes(res));
   })
   .catch(err => {
     alert("Uh oh!\nIt looks like you are missing an input!");
   });
+  console.log("\n\n\n\n\n\n");
+  console.log(JSON.state);
 };
 
 export default function App() {
@@ -206,7 +214,7 @@ export default function App() {
     {i: 'motor',        x: 0, y: 0, w: 1, h: 1, static: true},
     {i: 'noseCone',     x: 2, y: 0, w: 1, h: 1, static: true}
   ];
-  const [state, setState] = React.useState(inputsStructure_manual);
+  const [state, setState] = React.useState(inputsStructure_preFilled);
   const setInputFactor = factor => {
     const newState = [
       ...state,
@@ -232,7 +240,7 @@ export default function App() {
           setInputFactor={setInputFactor}/>        </div>)}
     </GridLayout>
       <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
-      {/*<Results/>*/}
+      <Results data={results}/>
     </div>
   );
 };
