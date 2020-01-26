@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, Typography } from '@material-ui/core'
 
 import InputSlider from "./InputSlider";
 import ListPicker from "./ListPicker";
@@ -18,13 +19,14 @@ export default function InputFactors(props) {
     }
     props.setInputFactor(newFactor);
   };
+
   return (
-    <div className={props.className}>
-        <h1>{props.title}</h1>
-        {props.inputs.map(input =>
-          input.name !== "material"
-            ? <InputSlider key={input.name} {...input} setInput={setInput}/>
-            : <ListPicker key={input.name} {...input} setInput={setInput}/>)}
-    </div>
+    <>
+      <Typography variant="h5">{props.title}</Typography>
+      {props.inputs.map(input =>
+	input.name !== "material"
+	  ? <InputSlider key={input.name} {...input} setInput={setInput}/>
+	  : <ListPicker key={input.name} {...input} setInput={setInput}/>)}
+    </>
   );
 }

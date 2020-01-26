@@ -2,13 +2,15 @@ import React from 'react';
 import './App.css';
 
 import InputFactors from "./InputFactors";
-import { Button } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import GridLayout from 'react-grid-layout';
 import '../node_modules/react-vis/dist/style.css';
 import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/react-resizable/css/styles.css';
 import CSVReader from "react-csv-reader";
 import Graph from "./Graph";
+import SimpleAppBar from "./SimpleAppBar"
 
 const inputsStructure_manual = [
   {
@@ -121,10 +123,20 @@ const inputsStructure_manual = [
       },
     ],
   },
-
 ];
 
 const inputsStructure_preFilled = [{"className":"body","header":"body","title":"Body","inputs":[{"name":"diameter","step":0.1,"max":1,"value":0.5},{"name":"length","step":1,"max":10,"value":5},{"name":"mass","step":0.1,"max":1,"value":0.5},{"name":"material","value":"aluminum"}]},{"className":"fins","header":"fins","title":"Fins","inputs":[{"name":"cant","value":60},{"name":"count","step":1,"max":10,"value":6},{"name":"height","step":0.1,"max":1,"value":0.6},{"name":"mass","step":0.1,"max":1,"value":0.6},{"name":"material","value":"aluminum"},{"name":"sweep","value":60}]},{"className":"variableMass","header":"variableMass","title":"Variable Mass","inputs":[{"name":"distanceFromTip","step":0.1,"max":1,"value":0.5},{"name":"mass","step":0.1,"max":1,"value":0.5}]},{"className":"motor","header":"motor","title":"Motor","inputs":[{"name":"impulse","step":5,"max":50,"value":25},{"name":"mass","step":0.1,"max":1,"value":0.5},{"name":"burnTime","step":2,"max":20,"value":8}]},{"className":"noseCone","header":"noseCone","title":"Nose Cone","inputs":[{"name":"length","step":0.1,"max":1,"value":0.6},{"name":"mass","step":0.1,"max":1,"value":0.6},{"name":"material","value":"aluminum"}]}];
+
+const useStyles = makeStyles({
+  flex: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  }, input: {
+    width: "30%",
+    padding: "30px"
+  }
+})
 
 const reformatRes = res => res.map(dataPoint => ({
   x: dataPoint[0],
@@ -168,6 +180,8 @@ const simulate = (state, setResults) => {
 };
 
 export default function App() {
+  const classes = useStyles();
+
   const layout = [
     {i: 'body',         x: 0, y: 0, w: 1, h: 1, static: true},
     {i: 'fins',         x: 1, y: 0, w: 1, h: 2, static: true},
@@ -194,22 +208,21 @@ export default function App() {
   const [results2, setResults2] = React.useState(undefined);
 
   return (
-    <div className="App">
-      <br/>
-      <h1>R-Sim</h1>
-      <GridLayout className="layout" layout={layout} cols={4} rowHeight={325} width={window.innerWidth} height={window.innerHeight}>
-        {state.map(structure =>
-          <div key={structure.header} className="inputElement">
-          <InputFactors className={structure.header} {...structure}
-            setInputFactor={setInputFactor}/>
-          </div>)}
-      </GridLayout>
+    <>
+      <SimpleAppBar />
+      <div className={classes.flex}>
+	{state.map(structure =>
+	<div key={structure.header} className={classes.input}>
+	  <InputFactors className={structure.header} {...structure}
+	    setInputFactor={setInputFactor}/>
+	</div>)}
+      </div>
       <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
       <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
         x: row[0],
         y: row[1],
       })))}/>
       <Graph data={results} data2={results2}/>
-    </div>
+    </>
   );
 };

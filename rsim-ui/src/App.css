@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
   background-color: #EEEEEE;
 }
 
@@ -39,7 +39,6 @@
 }
 
 .layout * {
-
 }
 
 .Results {
