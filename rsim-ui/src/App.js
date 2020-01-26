@@ -223,7 +223,13 @@ export default function App() {
           )
         }
       </div>
-      <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
+      <Button
+        color="secondary"
+        variant="contained"
+        onClick={() => simulate(state, setResults)}
+      >
+        Simulate!
+      </Button>
       <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
         x: row[0],
         y: row[1],

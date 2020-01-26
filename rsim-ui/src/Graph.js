@@ -26,7 +26,11 @@ const Results = props =>  {
       <div>
         {(d1 || d2) && <GridLayout className="layout" layout={layout} cols={2} rowHeight={300} width={window.innerWidth} height={window.innerHeight}>
           <div key="a" className="Results">
-            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/2) * layout[0]["w"] - 30}>
+            <XYPlot
+              className="plot"
+              height={(layout[0]["h"] * 300) - 40}
+              width={(window.innerWidth/2) * layout[0]["w"] - 30}
+            >
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis title="Time (s)"/>
@@ -36,7 +40,11 @@ const Results = props =>  {
             </XYPlot>
           </div>
           <div key="b" className="Results">
-            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/2) * layout[0]["w"] - 30}>
+            <XYPlot
+              className="plot"
+              height={(layout[0]["h"] * 300) - 40}
+              width={(window.innerWidth/2) * layout[0]["w"] - 30}
+            >
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis title="Time (s)"/>
@@ -46,7 +54,10 @@ const Results = props =>  {
             </XYPlot>
           </div>
           <div key="c" className="Results">
-            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/2) * layout[0]["w"] - 30}>
+            <XYPlot
+              className="plot"
+              height={(layout[0]["h"] * 300) - 40}
+              width={(window.innerWidth/2) * layout[0]["w"] - 30}>
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis title="Time (s)"/>
@@ -58,6 +69,6 @@ const Results = props =>  {
         </GridLayout>}
       </div>
     )
-  };
+};
 
 export default Results;
