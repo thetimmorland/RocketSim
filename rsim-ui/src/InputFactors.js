@@ -20,7 +20,7 @@ export default function InputFactors(props) {
   };
   return (
     <div className={props.className}>
-        <h1>{props.header}</h1>
+        <h1>{props.title}</h1>
         {props.inputs.map(input =>
           input.name !== "material"
             ? <InputSlider key={input.name} {...input} setInput={setInput}/>

@@ -7,11 +7,13 @@ import GridLayout from 'react-grid-layout';
 import '../node_modules/react-vis/dist/style.css';
 import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/react-resizable/css/styles.css';
-import {XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries} from 'react-vis';
+import CSVReader from "react-csv-reader";
+import Graph from "./Graph";
 
 const inputsStructure_manual = [
   {
     header: "body",
+    title: "Body",
     inputs: [
       {
         name: "diameter",
@@ -32,6 +34,7 @@ const inputsStructure_manual = [
   },
   {
     header: "fins",
+    title: "Fins",
     inputs: [
       {
         name: "cant",
@@ -55,6 +58,7 @@ const inputsStructure_manual = [
   },
   {
     header: "variableMass",
+    title: "Variable Mass",
     inputs: [
       {
         name: "distanceFromTip",
@@ -66,6 +70,7 @@ const inputsStructure_manual = [
   },
   {
     header: "motor",
+    title: "Motor",
     inputs: [
       {
         name: "impulse",
@@ -80,6 +85,7 @@ const inputsStructure_manual = [
   },
   {
     header: "noseCone",
+    title: "Nose Cone",
     inputs: [
       {
         name: "length",
@@ -96,74 +102,6 @@ const inputsStructure_manual = [
 ];
 
 const inputsStructure_preFilled = [{"className":"body","header":"body","inputs":[{"name":"diameter","value":34},{"name":"length","value":46},{"name":"mass","value":59},{"name":"material","value":"cardboard"}]},{"className":"fins","header":"fins","inputs":[{"name":"cant","value":15},{"name":"count","value":7},{"name":"height","value":29},{"name":"mass","value":52},{"name":"material","value":"aluminum"},{"name":"sweep","value":14}]},{"className":"variableMass","header":"variableMass","inputs":[{"name":"distanceFromTip","value":18},{"name":"mass","value":10}]},{"className":"motor","header":"motor","inputs":[{"name":"impulse","value":53},{"name":"mass","value":72},{"name":"burnTime","value":86}]},{"className":"noseCone","header":"noseCone","inputs":[{"name":"length","value":33},{"name":"mass","value":26},{"name":"material","value":"abs"}]}];
-
-/*
-const fromReadMe = {
-  'body': {
-        'diameter': positiveFloat,
-        'length': positiveFloat,
-        'mass': positiveFloat,
-        'material': validMaterial,
-  }, 'fins': {
-        'cant': positiveFloat,
-        'count': positiveFloat,
-        'height': positiveFloat,
-        'mass': positiveFloat,
-        'material': validMaterial,
-        'sweep': positiveFloat,
-  }, 'variableMass': {
-        'distanceFromTip': positiveFloat,
-        'mass': positiveFloat,
-  }, 'motor' : {
-        'impulse': positiveFloat,
-        'mass': positiveFloat,
-  }, 'noseCone': {
-        'length': positiveFloat,
-        'mass': positiveFloat,
-        'material': validMaterial,
-  },
-};
-*/
-const Results = props =>  {
-    const data = [
-      {x: 0, y: 8},
-      {x: 1, y: 5},
-      {x: 2, y: 4},
-      {x: 3, y: 9},
-      {x: 4, y: 1},
-      {x: 5, y: 7},
-      {x: 6, y: 6},
-      {x: 7, y: 3},
-      {x: 8, y: 2},
-      {x: 9, y: 0}
-    ];
-    const layout = [
-      {i: 'a', x: 0, y: 0, w: 2, h: 1, static: true},
-      {i: 'b', x: 1, y: 0, w: 1, h: 1, minW: 2, maxW: 4},
-      {i: 'c', x: 4, y: 0, w: 1, h: 2}
-    ];
-  return (
-    <GridLayout className="layout" layout={layout} cols={3} rowHeight={300} width={window.innerWidth} height={window.innerHeight}>
-      <div key="a" className="Results">
-        <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
-          <VerticalGridLines />
-          <HorizontalGridLines />
-          <XAxis title="Time (s)"/>
-          <YAxis title="Altitude"/>
-          <LineSeries data={props.data} />
-          <LineSeries data={props.data} />
-          <LineSeries data={props.data} />
-        </XYPlot>
-      </div>
-      <div key="b" className="Results">
-        Test
-      </div>
-      <div key="c" className="Results">
-        Test
-      </div>
-    </GridLayout>
-  )
-};
 
 const reformatRes = res => res.map(dataPoint => ({
   x: dataPoint[0],
@@ -214,7 +152,7 @@ export default function App() {
     {i: 'motor',        x: 0, y: 0, w: 1, h: 1, static: true},
     {i: 'noseCone',     x: 2, y: 0, w: 1, h: 1, static: true}
   ];
-  const [state, setState] = React.useState(inputsStructure_preFilled);
+  const [state, setState] = React.useState(inputsStructure_manual);
   const setInputFactor = factor => {
     const newState = [
       ...state,
@@ -230,6 +168,7 @@ export default function App() {
   console.log(state);
 
   const [results, setResults] = React.useState(undefined);
+  const [results2, setResults2] = React.useState(undefined);
 
   return (
     <div className="App">
@@ -240,7 +179,11 @@ export default function App() {
           setInputFactor={setInputFactor}/>        </div>)}
     </GridLayout>
       <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
-      <Results data={results}/>
+      <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
+        x: row[0],
+        y: row[1],
+      })))}/>
+      <Graph data={results} data2={results2}/>
     </div>
   );
 };
