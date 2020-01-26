@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 import InputFactors from "./InputFactors";
-import { Grid, Button } from '@material-ui/core';
+import { createMuiTheme, CssBaseline, Box, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import GridLayout from 'react-grid-layout';
 import '../node_modules/react-vis/dist/style.css';
@@ -11,6 +11,8 @@ import '../node_modules/react-resizable/css/styles.css';
 import CSVReader from "react-csv-reader";
 import Graph from "./Graph";
 import SimpleAppBar from "./SimpleAppBar"
+
+const theme = createMuiTheme()
 
 const inputsStructure_manual = [
   {
@@ -134,8 +136,7 @@ const useStyles = makeStyles({
     justifyContent: 'center',
     alignContent: 'space-evenly',
   }, input: {
-    width: "30%",
-    padding: "30px",
+    padding: theme.spacing(2),
     aligntContent: 'center'
   }
 })
@@ -211,6 +212,7 @@ export default function App() {
 
   return (
     <>
+      <CssBaseline />
       <SimpleAppBar />
       <div className={classes.flex}>
         {
@@ -223,18 +225,24 @@ export default function App() {
           )
         }
       </div>
-      <Button
-        color="secondary"
-        variant="contained"
-        onClick={() => simulate(state, setResults)}
-      >
-        Simulate!
-      </Button>
-      <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
-        x: row[0],
-        y: row[1],
-      })))} />
-      <Graph data={results} data2={results2} />
+        <Box p={2}>
+          <Button
+            color="secondary"
+            variant="contained"
+            onClick={() => simulate(state, setResults)}
+          >
+            Simulate!
+          </Button>
+        </Box>
+        <Box p={2}>
+          <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
+            x: row[0],
+            y: row[1],
+          })))} />
+        </Box>
+      <Box p={2}>
+        <Graph data={results} data2={results2} />
+      </Box>
     </>
   );
 };
