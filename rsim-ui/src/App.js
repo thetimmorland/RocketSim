@@ -149,7 +149,7 @@ export default function App() {
     {i: 'body',         x: 0, y: 0, w: 1, h: 1, static: true},
     {i: 'fins',         x: 1, y: 0, w: 1, h: 2, static: true},
     {i: 'variableMass', x: 2, y: 0, w: 1, h: 1, static: true},
-    {i: 'motor',        x: 0, y: 0, w: 1, h: 1, static: true},
+    {i: 'motor',        x: 0, y: 1, w: 1, h: 1, static: true},
     {i: 'noseCone',     x: 2, y: 0, w: 1, h: 1, static: true}
   ];
   const [state, setState] = React.useState(inputsStructure_manual);
@@ -172,12 +172,15 @@ export default function App() {
 
   return (
     <div className="App">
-    <GridLayout className="layout" layout={layout} cols={3} rowHeight={350} width={window.innerWidth} height={window.innerHeight}>
-      {state.map(structure =>
-        <div key={structure.header} className="inputElement">
-        <InputFactors className={structure.header} {...structure}
-          setInputFactor={setInputFactor}/>        </div>)}
-    </GridLayout>
+      <br/>
+      <h1>R-Sim</h1>
+      <GridLayout className="layout" layout={layout} cols={4} rowHeight={325} width={window.innerWidth} height={window.innerHeight}>
+        {state.map(structure =>
+          <div key={structure.header} className="inputElement">
+          <InputFactors className={structure.header} {...structure}
+            setInputFactor={setInputFactor}/>
+          </div>)}
+      </GridLayout>
       <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
       <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
         x: row[0],
