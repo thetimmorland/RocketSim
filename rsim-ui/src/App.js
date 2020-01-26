@@ -8,6 +8,7 @@ import '../node_modules/react-vis/dist/style.css';
 import '../node_modules/react-grid-layout/css/styles.css';
 import '../node_modules/react-resizable/css/styles.css';
 import {XYPlot, VerticalGridLines, HorizontalGridLines, XAxis, YAxis, LineSeries} from 'react-vis';
+import CSVReader from "react-csv-reader";
 
 const inputsStructure_manual = [
   {
@@ -245,6 +246,10 @@ export default function App() {
           setInputFactor={setInputFactor}/>        </div>)}
     </GridLayout>
       <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
+      <CSVReader onFileLoaded={data => setResults(data.map(row => ({
+        x: row[0],
+        y: row[1], 
+      })))}/>
       <Results data={results}/>
     </div>
   );
