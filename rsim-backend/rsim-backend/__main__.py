@@ -54,7 +54,7 @@ def rocket_sim():
 
       def model(t, v):
             return exaustVelocity(rocket) \
-                  * math.log(initalNetMass(rocket) / finalNetMass(rocket, t)) \
+                  * math.log(initalNetMass(rocket) / finalNetMass(rocket)) \
                   - STD_GRAVITY - (AIR_DENSITY * v**2 * dragCoefficient(rocket))
 
       t = np.linspace(0, 100, num=100*100)
