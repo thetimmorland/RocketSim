@@ -210,6 +210,15 @@ export default function App() {
   const [results, setResults] = React.useState(undefined);
   const [results2, setResults2] = React.useState(undefined);
 
+  const inputData = {};
+  for(const factor of state) {
+    const inputs = {};
+    for(const input of factor.inputs) {
+      inputs[input.name] = input.value;
+    }
+    inputData[factor.header] = inputs;
+  }
+
   return (
     <>
       <CssBaseline />
@@ -241,7 +250,7 @@ export default function App() {
           })))} />
         </Box>
       <Box p={2}>
-        <Graph data={results} data2={results2} />
+        <Graph data={results} data2={results2} inputs={state}/>
       </Box>
     </>
   );
