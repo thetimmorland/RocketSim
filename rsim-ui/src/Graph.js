@@ -23,38 +23,40 @@ const Results = props =>  {
     const d2__ = Derivative(d2_);
   
     return (
-      <GridLayout className="layout" layout={layout} cols={3} rowHeight={300} width={window.innerWidth} height={window.innerHeight}>
-        <div key="a" className="Results">
-          <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis title="Time (s)"/>
-            <YAxis title="Altitude"/>
-            <LineSeries data={d1} />
-            <LineSeries data={d2} />
-          </XYPlot>
-        </div>
-        <div key="b" className="Results">
-          <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis title="Time (s)"/>
-            <YAxis title="Velocity"/>
-            <LineSeries data={d1_} />
-            <LineSeries data={d2_} />
-          </XYPlot>
-        </div>
-        <div key="c" className="Results">
-          <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
-            <VerticalGridLines />
-            <HorizontalGridLines />
-            <XAxis title="Time (s)"/>
-            <YAxis title="Acceleration"/>
-            <LineSeries data={d1__} />
-            <LineSeries data={d2__} />
-          </XYPlot>
-        </div>
-      </GridLayout>
+      <div>
+        {(d1 || d2) && <GridLayout className="layout" layout={layout} cols={3} rowHeight={300} width={window.innerWidth} height={window.innerHeight}>
+          <div key="a" className="Results">
+            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
+              <VerticalGridLines />
+              <HorizontalGridLines />
+              <XAxis title="Time (s)"/>
+              <YAxis title="Altitude"/>
+              <LineSeries data={d1} />
+              <LineSeries data={d2} />
+            </XYPlot>
+          </div>
+          <div key="b" className="Results">
+            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
+              <VerticalGridLines />
+              <HorizontalGridLines />
+              <XAxis title="Time (s)"/>
+              <YAxis title="Velocity"/>
+              <LineSeries data={d1_} />
+              <LineSeries data={d2_} />
+            </XYPlot>
+          </div>
+          <div key="c" className="Results">
+            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
+              <VerticalGridLines />
+              <HorizontalGridLines />
+              <XAxis title="Time (s)"/>
+              <YAxis title="Acceleration"/>
+              <LineSeries data={d1__} />
+              <LineSeries data={d2__} />
+            </XYPlot>
+          </div>
+        </GridLayout>}
+      </div>
     )
   };
 
