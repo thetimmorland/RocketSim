@@ -105,7 +105,7 @@ const inputsStructure_preFilled = [{"className":"body","header":"body","inputs":
 
 const reformatRes = res => res.map(dataPoint => ({
   x: dataPoint[0],
-  y: dataPoint[1][0],
+  y: dataPoint[1],
 }));
 
 const simulate = (state, setResults) => {
