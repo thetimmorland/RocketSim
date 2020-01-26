@@ -54,6 +54,10 @@ export default function InputSlider(props) {
             value={typeof value === 'number' ? value : 0}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
+            step={props.step || 10}
+            min={props.min || 0}
+            max={props.max || 100}
+            type={'number'}
           />
         </Grid>
         <Grid item>
@@ -63,13 +67,6 @@ export default function InputSlider(props) {
             margin="dense"
             onChange={handleInputChange}
             onBlur={handleBlur}
-            inputProps={{
-              step: props.step || 10,
-              min: props.min || 0,
-              max: props.max || 100,
-              type: 'number',
-              'aria-labelledby': 'input-slider',
-            }}
           />
         </Grid>
       </Grid>

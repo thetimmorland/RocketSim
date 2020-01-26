@@ -17,15 +17,18 @@ const inputsStructure_manual = [
     inputs: [
       {
         name: "diameter",
-        min: undefined,
-        step: undefined,
-        max: undefined,
+        step: 0.1,
+        max: 1,
       },
       {
         name: "length",
+        step: 1,
+        max: 10,
       },
       {
         name: "mass",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "material",
@@ -41,12 +44,18 @@ const inputsStructure_manual = [
       },
       {
         name: "count",
+        step: 1,
+        max: 10,
       },
       {
         name: "height",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "mass",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "material",
@@ -62,9 +71,13 @@ const inputsStructure_manual = [
     inputs: [
       {
         name: "distanceFromTip",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "mass",
+        step: 0.1,
+        max: 1,
       },
     ],
   },
@@ -74,12 +87,18 @@ const inputsStructure_manual = [
     inputs: [
       {
         name: "impulse",
+        step: 5,
+        max: 50,
       },
       {
         name: "mass",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "burnTime",
+        step: 2,
+        max: 20,
       },
     ],
   },
@@ -89,9 +108,13 @@ const inputsStructure_manual = [
     inputs: [
       {
         name: "length",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "mass",
+        step: 0.1,
+        max: 1,
       },
       {
         name: "material",
@@ -101,7 +124,7 @@ const inputsStructure_manual = [
 
 ];
 
-const inputsStructure_preFilled = [{"className":"body","header":"body","inputs":[{"name":"diameter","value":34},{"name":"length","value":46},{"name":"mass","value":59},{"name":"material","value":"cardboard"}]},{"className":"fins","header":"fins","inputs":[{"name":"cant","value":15},{"name":"count","value":7},{"name":"height","value":29},{"name":"mass","value":52},{"name":"material","value":"aluminum"},{"name":"sweep","value":14}]},{"className":"variableMass","header":"variableMass","inputs":[{"name":"distanceFromTip","value":18},{"name":"mass","value":10}]},{"className":"motor","header":"motor","inputs":[{"name":"impulse","value":53},{"name":"mass","value":72},{"name":"burnTime","value":86}]},{"className":"noseCone","header":"noseCone","inputs":[{"name":"length","value":33},{"name":"mass","value":26},{"name":"material","value":"abs"}]}];
+const inputsStructure_preFilled = [{"className":"body","header":"body","title":"Body","inputs":[{"name":"diameter","step":0.1,"max":1,"value":0.5},{"name":"length","step":1,"max":10,"value":5},{"name":"mass","step":0.1,"max":1,"value":0.5},{"name":"material","value":"aluminum"}]},{"className":"fins","header":"fins","title":"Fins","inputs":[{"name":"cant","value":60},{"name":"count","step":1,"max":10,"value":6},{"name":"height","step":0.1,"max":1,"value":0.6},{"name":"mass","step":0.1,"max":1,"value":0.6},{"name":"material","value":"aluminum"},{"name":"sweep","value":60}]},{"className":"variableMass","header":"variableMass","title":"Variable Mass","inputs":[{"name":"distanceFromTip","step":0.1,"max":1,"value":0.5},{"name":"mass","step":0.1,"max":1,"value":0.5}]},{"className":"motor","header":"motor","title":"Motor","inputs":[{"name":"impulse","step":5,"max":50,"value":25},{"name":"mass","step":0.1,"max":1,"value":0.5},{"name":"burnTime","step":2,"max":20,"value":8}]},{"className":"noseCone","header":"noseCone","title":"Nose Cone","inputs":[{"name":"length","step":0.1,"max":1,"value":0.6},{"name":"mass","step":0.1,"max":1,"value":0.6},{"name":"material","value":"aluminum"}]}];
 
 const reformatRes = res => res.map(dataPoint => ({
   x: dataPoint[0],
@@ -152,7 +175,7 @@ export default function App() {
     {i: 'motor',        x: 0, y: 1, w: 1, h: 1, static: true},
     {i: 'noseCone',     x: 2, y: 0, w: 1, h: 1, static: true}
   ];
-  const [state, setState] = React.useState(inputsStructure_manual);
+  const [state, setState] = React.useState(inputsStructure_preFilled);
   const setInputFactor = factor => {
     const newState = [
       ...state,

@@ -11,8 +11,8 @@ import Derivative from './Derivative';
 const Results = props =>  {
     const layout = [
       {i: 'a', x: 0, y: 0, w: 2, h: 1, static: true},
-      {i: 'b', x: 1, y: 0, w: 1, h: 1, minW: 2, maxW: 4},
-      {i: 'c', x: 4, y: 0, w: 1, h: 2}
+      {i: 'b', x: 0, y: 1, w: 2, h: 1, static: true},
+      {i: 'c', x: 0, y: 2, w: 2, h: 2, static: true}
     ];
   
     const d1 = props.data;
@@ -24,9 +24,9 @@ const Results = props =>  {
   
     return (
       <div>
-        {(d1 || d2) && <GridLayout className="layout" layout={layout} cols={3} rowHeight={300} width={window.innerWidth} height={window.innerHeight}>
+        {(d1 || d2) && <GridLayout className="layout" layout={layout} cols={2} rowHeight={300} width={window.innerWidth} height={window.innerHeight}>
           <div key="a" className="Results">
-            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
+            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/2) * layout[0]["w"] - 30}>
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis title="Time (s)"/>
@@ -36,7 +36,7 @@ const Results = props =>  {
             </XYPlot>
           </div>
           <div key="b" className="Results">
-            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
+            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/2) * layout[0]["w"] - 30}>
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis title="Time (s)"/>
@@ -46,7 +46,7 @@ const Results = props =>  {
             </XYPlot>
           </div>
           <div key="c" className="Results">
-            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/3) * layout[0]["w"] - 30}>
+            <XYPlot className="plot" height={(layout[0]["h"] * 300) - 40} width={(window.innerWidth/2) * layout[0]["w"] - 30}>
               <VerticalGridLines />
               <HorizontalGridLines />
               <XAxis title="Time (s)"/>
