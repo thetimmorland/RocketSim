@@ -15,6 +15,11 @@ const useStyles = makeStyles({
 });
 
 export default function InputSlider(props) {
+
+  const step = props.step || 0.1
+  const min = props.min || 0
+  const max = props.max || 1
+
   const classes = useStyles();
 
   const value = props.value;
@@ -36,10 +41,10 @@ export default function InputSlider(props) {
   };
 
   const handleBlur = () => {
-    if (value < props.min) {
-      setValue(props.min);
-    } else if (value > props.max) {
-      setValue(props.max);
+    if (value < min) {
+      setValue(min);
+    } else if (value > max) {
+      setValue(max);
     }
   };
 
@@ -54,9 +59,9 @@ export default function InputSlider(props) {
             value={typeof value === 'number' ? value : props.min}
             onChange={handleSliderChange}
             aria-labelledby="input-slider"
-            step={props.step || 10}
-            min={props.min || 0}
-            max={props.max || 100}
+            step={step}
+            min={min}
+            max={max}
             type={'number'}
           />
         </Grid>
