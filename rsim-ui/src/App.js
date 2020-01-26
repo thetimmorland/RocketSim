@@ -157,8 +157,7 @@ const Results = props =>  {
           <XAxis title="Time (s)"/>
           <YAxis title="Altitude"/>
           <LineSeries data={props.data} />
-          <LineSeries data={props.data} />
-          <LineSeries data={props.data} />
+          <LineSeries data={props.data2} />
         </XYPlot>
       </div>
       <div key="b" className="Results">
@@ -236,6 +235,7 @@ export default function App() {
   console.log(state);
 
   const [results, setResults] = React.useState(undefined);
+  const [results2, setResults2] = React.useState(undefined);
 
   return (
     <div className="App">
@@ -246,11 +246,11 @@ export default function App() {
           setInputFactor={setInputFactor}/>        </div>)}
     </GridLayout>
       <Button onClick={() => simulate(state, setResults)}>Simulate!</Button>
-      <CSVReader onFileLoaded={data => setResults(data.map(row => ({
+      <CSVReader onFileLoaded={data => setResults2(data.map(row => ({
         x: row[0],
         y: row[1], 
       })))}/>
-      <Results data={results}/>
+      <Results data={results} data2={results2}/>
     </div>
   );
 };
