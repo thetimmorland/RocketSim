@@ -133,8 +133,7 @@ const useStyles = makeStyles({
   flex: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignContent: 'space-evenly',
+    alignContent: 'stretch',
   }, input: {
     padding: theme.spacing(2),
     aligntContent: 'center'
@@ -163,7 +162,7 @@ const simulate = (state, setResults) => {
   }
 
   // send to server to simulate
-  fetch("http://localhost:5000/", {
+  fetch(process.env.BACKEND_HOST || "http://localhost:5000/", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
