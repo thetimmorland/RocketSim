@@ -61,7 +61,8 @@ def rocket_sim():
       v = odeint(model, 0, t).flatten()
 
       altitude = cumtrapz(v, x=t)
-      return jsonify(list(zip(t.tolist(), altitude.tolist())))
+      altitude = [ a for a in altitude if a > 0 ]
+      return jsonify(list(zip(t.tolist(), altitude)))
 
 
 def exaustVelocity(rocket):
