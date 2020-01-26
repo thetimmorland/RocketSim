@@ -1,10 +1,14 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core'
+import { Container, Paper, Box, Grid, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 
 import InputSlider from "./InputSlider";
 import ListPicker from "./ListPicker";
 
+
 export default function InputFactors(props) {
+  // const classes = useStyles()
+
   const setInput = input => {
     const newFactor = {
       ...props,
@@ -21,12 +25,21 @@ export default function InputFactors(props) {
   };
 
   return (
-    <>
-      <Typography variant="h5">{props.title}</Typography>
-      {props.inputs.map(input =>
-	input.name !== "material"
-	  ? <InputSlider key={input.name} {...input} setInput={setInput}/>
-	  : <ListPicker key={input.name} {...input} setInput={setInput}/>)}
-    </>
+    <Container maxWidth='xs'>
+      <Box p={3}>
+        <Paper>
+          <Box p={3}>
+            <Box p={3}>
+              <Typography variant="h5">{props.title}</Typography>
+            </Box>
+            {props.inputs.map(input =>
+              input.name !== "material"
+                ? <InputSlider key={input.name} {...input} setInput={setInput}/>
+                : <ListPicker key={input.name} {...input} setInput={setInput}/>
+            )}
+          </Box>
+        </Paper>
+      </Box>
+    </Container>
   );
 }

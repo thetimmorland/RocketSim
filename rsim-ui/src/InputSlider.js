@@ -49,7 +49,7 @@ export default function InputSlider(props) {
   };
 
   return (
-    <div className={classes.root}>
+    <>
       <Typography id="input-slider" gutterBottom>
         {props.name}
       </Typography>
@@ -69,12 +69,13 @@ export default function InputSlider(props) {
           <Input
             className={classes.input}
             value={value}
-            margin="dense"
+	    variant='outlined'
+            // margin="dense"
             onChange={handleInputChange}
             onBlur={handleBlur}
           />
         </Grid>
       </Grid>
-    </div>
+    </>
   );
 }
