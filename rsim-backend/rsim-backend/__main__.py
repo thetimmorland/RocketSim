@@ -54,10 +54,10 @@ def rocket_sim():
 
       def model(t, v):
             return exaustVelocity(rocket) \
-                  + math.log(initalNetMass(rocket) / netMass(rocket, t)) \
+                  * math.log(initalNetMass(rocket) / finalNetMass(rocket, t)) \
                   - STD_GRAVITY - (AIR_DENSITY * v**2 * dragCoefficient(rocket))
 
-      t = np.linspace(0, 100)
+      t = np.linspace(0, 100, num=100*100)
       v = odeint(model, 0, t).flatten()
 
       altitude = cumtrapz(v, x=t)
@@ -73,12 +73,8 @@ def initalNetMass(rocket):
                   rocket['motor']['mass'],
                   rocket['noseCone']['mass']])
 
-def netMass(rocket, time):
-      if (time < rocket['motor']['burnTime']):
-            return initalNetMass(rocket) \
-                  - time / rocket['motor']['burnTime'] * rocket['motor']['mass']
-      else:
-            return initalNetMass(rocket) - rocket['motor']['mass']
+def finalNetMass(rocket):
+      return initalNetMass(rocket) - rocket['motor']['mass']
 
 def dragCoefficient(rocket):
       bodyDragCoefficient = rocket['body']['diameter'] * rocket['body']['length'] \
