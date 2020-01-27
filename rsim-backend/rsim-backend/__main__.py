@@ -25,37 +25,38 @@ validMaterial = And(Use(str), lambda s:
                     s in DRAG_COEFFICIENTS.keys())
 
 rocketSchema = Schema({
-      'body': {
-            'diameter': positiveFloat,
-            'length': positiveFloat,
-            'mass': positiveFloat,
-            'material': validMaterial,
-      }, 'fins': {
-            'count': positiveInt,
-            'height': positiveFloat,
-            'mass': positiveFloat,
-            'material': validMaterial,
-            'sweep': positiveFloat,
-      }, 'motor' : {
-            'burnTime': positiveFloat,
-            'impulse': positiveFloat,
-            'mass': positiveFloat,
-      }, 'noseCone': {
-            'length': positiveFloat,
-            'mass': positiveFloat,
-            'material': validMaterial,
-      },
+      'bodyDiameter': positiveFloat,
+      'bodyLength': positiveFloat,
+      'bodyMass': positiveFloat,
+      'bodyMaterial': validMaterial,
+      'finCount': positiveInt,
+      'finHeight': positiveFloat,
+      'finMass': positiveFloat,
+      'finMaterial': validMaterial,
+      'finSweep': positiveFloat,
+      'motorBurnTime': positiveFloat,
+      'motorImpulse': positiveFloat,
+      'motorMass': positiveFloat,
+      'noseDiameter': positiveFloat,
+      'noseLength': positiveFloat,
+      'noseMass': positiveFloat,
+      'noseMaterial': validMaterial,
 }, ignore_extra_keys=True)
-
 
 @app.route('/', methods = ['POST'])
 def rocket_sim():
-      rocket = rocketSchema.validate(request.json)
+
+      try:
+            rocket = rocketSchema.validate(request.json)
+      except:
+            return 400
 
       def model(t, v):
-            return exaustVelocity(rocket) \
+            dvdt = exaustVelocity(rocket) \
                   * math.log(initalNetMass(rocket) / finalNetMass(rocket)) \
                   - STD_GRAVITY - (AIR_DENSITY * v**2 * dragCoefficient(rocket))
+
+            return dvdt
 
       t = np.linspace(0, 100, num=100*100)
       v = odeint(model, 0, t).flatten()
@@ -64,38 +65,33 @@ def rocket_sim():
       altitude = [ a for a in altitude if a > 0 ]
       return jsonify(list(zip(t.tolist(), altitude)))
 
+def exaustVelocity(rocket: dict) -> float:
+      return STD_GRAVITY * rocket['motorImpulse']
 
-def exaustVelocity(rocket):
-      return STD_GRAVITY * rocket['motor']['impulse']
+def initalNetMass(rocket: dict) -> float:
+      return sum([rocket['bodyMass'],
+                  rocket['finMass'],
+                  rocket['motorMass'],
+                  rocket['noseMass']])
 
-def initalNetMass(rocket):
-      return sum([rocket['body']['mass'],
-                  rocket['fins']['mass'],
-                  rocket['motor']['mass'],
-                  rocket['noseCone']['mass']])
+def finalNetMass(rocket: dict) -> float:
+      return initalNetMass(rocket) - rocket['motorMass']
 
-def finalNetMass(rocket):
-      return initalNetMass(rocket) - rocket['motor']['mass']
+def dragCoefficient(rocket: dict) -> float:
+      dragCoefficients = {}
 
-def dragCoefficient(rocket):
-      bodyDragCoefficient = rocket['body']['diameter'] * rocket['body']['length'] \
-            * DRAG_COEFFICIENTS[rocket['body']['material']]
+      dragCoefficients['body'] = rocket['bodyDiameter'] * rocket['bodyLength'] \
+            * DRAG_COEFFICIENTS[rocket['bodyMaterial']]
 
-      finDragCoefficient = 2 * rocket['fins']['count'] * rocket['fins']['height']**2 \
-            * math.sin(rocket['fins']['sweep']) * DRAG_COEFFICIENTS[rocket['fins']['material']]
+      dragCoefficients['fins'] = 2 * rocket['finCount'] * rocket['finHeight']**2 \
+            * math.sin(rocket['finSweep']) * DRAG_COEFFICIENTS[rocket['finMaterial']]
 
-      noseConeRadius = rocket['body']['diameter'] / 2
-      noseDragCoefficient = math.pi * noseConeRadius \
-            * math.sqrt(rocket['noseCone']['length']**2 + noseConeRadius**2) \
-            * DRAG_COEFFICIENTS[rocket['noseCone']['material']]
+      noseRadius = rocket['noseDiameter'] / 2
+      dragCoefficients['nose'] = math.pi * noseRadius \
+            * math.sqrt(rocket['noseLength']**2 + noseRadius**2) \
+            * DRAG_COEFFICIENTS[rocket['noseMaterial']]
 
-      return sum([
-            bodyDragCoefficient,
-            finDragCoefficient,
-            noseDragCoefficient,
-      ])
-
-      return airDensity * velocity**2 * netDragCoefficient / 2
+      return AIR_DENSITY * sum(dragCoefficients.values()) / 2
 
 if __name__ == '__main__':
       app.run(debug=os.getenv("FLASK_DEBUG") or True)
