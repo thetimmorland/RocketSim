@@ -73,17 +73,17 @@ export default function InputForm() {
             Body
           </Typography>
           <TextField
-            name="bodyLength"
-            label="Length (m)"
-            value={state.bodyLength}
+            name="bodyDiameter"
+            label="Diameter (m)"
+            value={state.bodyDiameter}
             onChange={handleChange}
             className={classes.input}
             type="number"
           />
           <TextField
-            name="bodyDiameter"
-            label="Diameter (m)"
-            value={state.bodyDiameter}
+            name="bodyLength"
+            label="Length (m)"
+            value={state.bodyLength}
             onChange={handleChange}
             className={classes.input}
             type="number"
@@ -110,6 +110,14 @@ export default function InputForm() {
             type="number"
           />
           <TextField
+            name="finHeight"
+            label="Height"
+            value={state.finHeight}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+          <TextField
             name="finMass"
             label="Mass"
             value={state.finMass}
@@ -118,24 +126,82 @@ export default function InputForm() {
             type="number"
           />
           <TextField
-            name="finAngle"
-            label="Angle"
-            value={state.finMass}
+            name="finSweep"
+            label="Sweep Angle"
+            value={state.finSweep}
             onChange={handleChange}
             className={classes.input}
             type="number"
           />
         </Paper>
-        <Fab
-          className={classes.fab}
-          type="submit"
-          variant="extended"
-          color="primary"
-        >
-          <NavigationIcon className={classes.fabIcon} />
-          Simulate
-        </Fab>
+        <Paper className={classes.paper}>
+          <Typography variant="h6" className={classes.heading}>
+            Motor
+          </Typography>
+          <TextField
+            name="motorBurnTime"
+            label="Burn Time (s)"
+            value={state.motorBurnTime}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+          <TextField
+            name="motorImpulse"
+            label="Impulse (N*m)"
+            value={state.motorImpulse}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+          <TextField
+            name="motorMass"
+            label="Mass (kg)"
+            value={state.motorMass}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+        </Paper>
+        <Paper className={classes.paper}>
+          <Typography variant="h6" className={classes.heading}>
+            Nose
+          </Typography>
+          <TextField
+            name="noseDiameter"
+            label="Diameter (m)"
+            value={state.noseDiameter}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+          <TextField
+            name="noseLength"
+            label="Length (m)"
+            value={state.noseLength}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+          <TextField
+            name="noseMass"
+            label="Mass"
+            value={state.noseMass}
+            onChange={handleChange}
+            className={classes.input}
+            type="number"
+          />
+        </Paper>
       </div>
+      <Fab
+        className={classes.fab}
+        type="submit"
+        variant="extended"
+        color="primary"
+      >
+        <NavigationIcon className={classes.fabIcon} />
+        Simulate
+      </Fab>
     </form>
   );
 }
