@@ -1,4 +1,4 @@
-import React, { UseState } from 'react'
+import React from 'react'
 import { CssBaseline } from '@material-ui/core'
 import SimpleAppBar from './SimpleAppBar'
 import InputForm from './InputForm'

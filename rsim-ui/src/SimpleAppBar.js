@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SimpleAppBar() {
-  const classes = makeStyles()
+  const classes = useStyles()
 
   return (
     <div className={classes.root}>
