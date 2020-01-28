@@ -77,7 +77,6 @@ def initalNetMass(rocket: dict) -> float:
         rocket['noseMass']
     ])
 
-
 def finalNetMass(rocket: dict) -> float:
     return initalNetMass(rocket) - rocket['motorMass']
 

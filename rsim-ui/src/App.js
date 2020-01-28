@@ -1,16 +1,16 @@
-import React, { UseState } from 'react';
-import { CssBaseline } from '@material-ui/core';
+import React, { UseState } from 'react'
+import { CssBaseline } from '@material-ui/core'
 import SimpleAppBar from './SimpleAppBar'
-import SimulatorParms from './SimulatorParams'
+import InputForm from './InputForm'
 
 export default function App() {
-  const [state, updateState] = UseState({ 'params': [], 'results': [] })
+  // const [output, updateOutput] = UseState([])
 
   return(
     <>
       <CssBaseline />
       <SimpleAppBar />
-      <SimulatorParms />
+      <InputForm />
     </>
   )
 }
