@@ -4,6 +4,7 @@ import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
 from scipy.integrate import cumtrapz, odeint
+from scipy.constants import g
 
 app = FastAPI()
 
@@ -40,10 +41,10 @@ class Rocket(BaseModel):
 @app.post("/api")
 def simulate(rocket: Rocket):
 
-    exhaustVelocity = STD_GRAVITY * rocket.motorImpulse
+    exhaustVelocity = g * rocket.motorImpulse
 
     initialNetMass = sum([rocket.bodyMass, rocket.finMass,
-                        rocket.motorMass, rocket.noseMass])
+                          rocket.motorMass, rocket.noseMass])
 
     finalNetMass = initialNetMass - rocket.motorMass
 
@@ -68,9 +69,9 @@ def simulate(rocket: Rocket):
 
         return dvdt
 
-    t = np.linspace(0, 100, num = 100 * 100)
+    t = np.linspace(0, 100, num=100 * 100)
     v = odeint(model, 0, t).flatten()
 
-    altitude=cumtrapz(v, x = t)
-    altitude=[a for a in altitude if a > 0]
+    altitude = cumtrapz(v, x=t)
+    altitude = [a for a in altitude if a > 0]
     return list(zip(t.tolist(), altitude))
