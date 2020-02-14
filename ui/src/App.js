@@ -1,92 +1,81 @@
-import React, { useState } from "react";
-import axios from "axios";
 import {
+  ExpansionPanel,
+  AppBar,
+  Box,
+  Button,
   CssBaseline,
   Grid,
   Paper,
   TextField,
+  Toolbar,
   Typography,
-  Box,
-  Button,
-  AppBar,
-  Toolbar
+  ExpansionPanelDetails,
+  ExpansionPanelSummary
 } from "@material-ui/core";
-import { sizing } from "@material-ui/system";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import axios from "axios";
+import React, { useState } from "react";
+import Chart from "./Chart";
 
-const InputGrid = ({ children }) => {
+const InputSection = props => {
   return (
-    <Grid container direction="column" spacing={2}>
-      {children.map((child, idx) => (
-        <Grid item key={idx}>
-          {child}
-        </Grid>
-      ))}
-    </Grid>
-  );
-};
-
-const PaperList = ({ children }) => {
-  return (
-    <Paper>
-      <Box p={2}>
+    <ExpansionPanel {...props}>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        <Typography>{props.label}</Typography>
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
         <Grid container direction="column" spacing={2}>
-          {children.map((child, idx) => (
+          {props.children.map((child, idx) => (
             <Grid item key={idx}>
               {child}
             </Grid>
           ))}
         </Grid>
-      </Box>
-    </Paper>
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
   );
 };
 
-const Heading = props => {
-  return (
-    <Typography variant="h6" {...props}>
-      {props.children}
-    </Typography>
-  );
-};
-
-const NumericInput = props => {
+const NumberField = props => {
   return <TextField type="number" variant="outlined" fullWidth {...props} />;
-};
-
-const MaterialInput = props => {
-  return;
 };
 
 export default function App() {
   const [input, setInput] = useState({
-    bodyDiameter: 10,
-    bodyLength: 10,
-    bodyMass: 10,
+    bodyDiameter: 0.5,
+    bodyLength: 0.5,
+    bodyMass: 0.1,
     bodyMaterial: "abs",
     finCount: 3,
-    finHeight: 10,
-    finMass: 10,
+    finHeight: 0.1,
+    finMass: 0.6,
     finMaterial: "abs",
-    finSweep: 10,
+    finSweep: 60,
     motorBurnTime: 10,
-    motorImpulse: 10,
-    motorMass: 10,
-    noseDiameter: 10,
-    noseLength: 10,
-    noseMass: 10,
+    motorImpulse: 25,
+    motorMass: 0.5,
+    noseDiameter: 0.5,
+    noseLength: 0.6,
+    noseMass: 0.1,
     noseMaterial: "abs"
   });
 
-  const [output, setOutput] = useState([{ t: 0.0, y: 0.0 }]);
+  const [output, setOutput] = useState([{ t: 0.0, y: undefined }]);
+
+  const [expanded, setExpanded] = React.useState(false);
 
   const handleChange = key => event => {
     setInput({ ...input, [key]: event.target.value });
   };
 
+  const handleExpand = panel => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
+
   const handleSubmit = event => {
     event.preventDefault();
     axios
-      .post("/api")
+      .post("/api/simulate", input)
       .then(res => {
         setOutput(res.data);
       })
@@ -98,106 +87,115 @@ export default function App() {
   return (
     <form onSubmit={handleSubmit}>
       <CssBaseline />
-      <Box width={1}>
-        <AppBar position="static" color="primary">
-          <Toolbar>
-            <Grid container justify="space-between">
-              <Grid item>
-                <Typography variant="h6" color="inherit">
-                  RSim
-                </Typography>
-              </Grid>
-              <Grid item>
-                <Button variant="contained" type="submit">
-                  Submit
-                </Button>
-              </Grid>
+      <AppBar position="sticky">
+        <Toolbar>
+          <Grid container justify="space-between">
+            <Grid item>
+              <Typography variant="h6">RSim</Typography>
             </Grid>
-          </Toolbar>
-        </AppBar>
-      </Box>
-      <Box p={2} height="100%" style={{ overflow: "auto" }}>
+            <Grid item>
+              <Button variant="contained" type="submit" color="secondary">
+                Simulate
+              </Button>
+            </Grid>
+          </Grid>
+        </Toolbar>
+      </AppBar>
+      <Box m={2}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={2}>
-            <InputGrid>
-              <PaperList>
-                <Heading>Body</Heading>
-                <NumericInput
-                  label="Diameter (m)"
-                  value={input.bodyDiameter}
-                  onChange={handleChange("bodyDiameter")}
-                />
-                <NumericInput
-                  label="Length (m)"
-                  value={input.bodyLength}
-                  onChange={handleChange("bodyLength")}
-                />
-                <NumericInput
-                  label="Mass (kg)"
-                  value={input.bodyMass}
-                  onChange={handleChange("bodyMass")}
-                />
-              </PaperList>
-              <PaperList>
-                <Heading>Fins</Heading>
-                <NumericInput
-                  label="Count"
-                  value={input.finCount}
-                  onChange={handleChange("finCount")}
-                />
-                <NumericInput
-                  label="Height (m)"
-                  value={input.finHeight}
-                  onChange={handleChange("finHeight")}
-                />
-                <NumericInput
-                  label="Mass (kg)"
-                  value={input.finMass}
-                  onChange={handleChange("finMass")}
-                />
-                <NumericInput
-                  label="Sweep Angle (°)"
-                  value={input.finSweep}
-                  onChange={handleChange("finSweep")}
-                />
-              </PaperList>
-              <PaperList>
-                <Heading>Motor</Heading>
-                <NumericInput
-                  label="Burn Time (s)"
-                  value={input.motorBurnTime}
-                  onChange={handleChange("motorBurnTime")}
-                />
-                <NumericInput
-                  label="Impulse (N⋅m)"
-                  value={input.motorImpulse}
-                  onChange={handleChange("motorImpulse")}
-                />
-                <NumericInput
-                  label="Mass (kg)"
-                  value={input.motorMass}
-                  onChange={handleChange("motorMass")}
-                />
-              </PaperList>
-              <PaperList>
-                <Heading>Nose</Heading>
-                <NumericInput
-                  label="Diameter (m)"
-                  value={input.noseDiameter}
-                  onChange={handleChange("noseDiameter")}
-                />
-                <NumericInput
-                  label="Length (m)"
-                  value={input.noseLength}
-                  onChange={handleChange("noseLength")}
-                />
-                <NumericInput
-                  label="Mass (kg)"
-                  value={input.noseMass}
-                  onChange={handleChange("noseMass")}
-                />
-              </PaperList>
-            </InputGrid>
+          <Grid item xs={12} sm={4} md={2}>
+            <InputSection
+              label="Body"
+              expanded={expanded === "body"}
+              onChange={handleExpand("body")}
+            >
+              <NumberField
+                label="Diameter (m)"
+                value={input.bodyDiameter}
+                onChange={handleChange("bodyDiameter")}
+              />
+              <NumberField
+                label="Length (m)"
+                value={input.bodyLength}
+                onChange={handleChange("bodyLength")}
+              />
+              <NumberField
+                label="Mass (kg)"
+                value={input.bodyMass}
+                onChange={handleChange("bodyMass")}
+              />
+            </InputSection>
+            <InputSection
+              label="Fins"
+              expanded={expanded === "fins"}
+              onChange={handleExpand("fins")}
+            >
+              <NumberField
+                label="Count"
+                value={input.finCount}
+                onChange={handleChange("finCount")}
+              />
+              <NumberField
+                label="Height (m)"
+                value={input.finHeight}
+                onChange={handleChange("finHeight")}
+              />
+              <NumberField
+                label="Mass (kg)"
+                value={input.finMass}
+                onChange={handleChange("finMass")}
+              />
+              <NumberField
+                label="Sweep Angle (°)"
+                value={input.finSweep}
+                onChange={handleChange("finSweep")}
+              />
+            </InputSection>
+            <InputSection
+              label="Motor"
+              expanded={expanded === "motor"}
+              onChange={handleExpand("motor")}
+            >
+              <NumberField
+                label="Burn Time (s)"
+                value={input.motorBurnTime}
+                onChange={handleChange("motorBurnTime")}
+              />
+              <NumberField
+                label="Impulse (N⋅m)"
+                value={input.motorImpulse}
+                onChange={handleChange("motorImpulse")}
+              />
+              <NumberField
+                label="Mass (kg)"
+                value={input.motorMass}
+                onChange={handleChange("motorMass")}
+              />
+            </InputSection>
+            <InputSection
+              label="Nose"
+              expanded={expanded === "nose"}
+              onChange={handleExpand("nose")}
+            >
+              <NumberField
+                label="Diameter (m)"
+                value={input.noseDiameter}
+                onChange={handleChange("noseDiameter")}
+              />
+              <NumberField
+                label="Length (m)"
+                value={input.noseLength}
+                onChange={handleChange("noseLength")}
+              />
+              <NumberField
+                label="Mass (kg)"
+                value={input.noseMass}
+                onChange={handleChange("noseMass")}
+              />
+            </InputSection>
+          </Grid>
+          <Grid item xs={12} sm={8} md={10}>
+            <Chart data={output} />
           </Grid>
         </Grid>
       </Box>

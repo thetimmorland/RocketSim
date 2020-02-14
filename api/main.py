@@ -38,7 +38,7 @@ class Rocket(BaseModel):
     noseMaterial: str
 
 
-@app.post("/api")
+@app.post("/api/simulate")
 def simulate(rocket: Rocket):
 
     exhaustVelocity = g * rocket.motorImpulse
@@ -62,16 +62,21 @@ def simulate(rocket: Rocket):
 
     totalDragCoefficient = sum(dragCoefficients.values())
 
-    def model(t, v):
+    def model(time, velocity):
         dvdt = exhaustVelocity \
             * math.log(initialNetMass / finalNetMass) \
-            - STD_GRAVITY - (AIR_DENSITY * v**2 * totalDragCoefficient)
+            - STD_GRAVITY - (AIR_DENSITY * velocity**2 * totalDragCoefficient)
 
         return dvdt
 
-    t = np.linspace(0, 100, num=100 * 100)
-    v = odeint(model, 0, t).flatten()
+    time = np.linspace(0, 50)
+    velocity = odeint(model, 0, time).flatten()
 
-    altitude = cumtrapz(v, x=t)
+    altitude = cumtrapz(velocity, x=time)
+
     altitude = [a for a in altitude if a > 0]
-    return list(zip(t.tolist(), altitude))
+
+    data = [{"time": time[i], "altitude": altitude[i], "velocity": velocity[i]}
+            for i in range(len(altitude))]
+
+    return data
