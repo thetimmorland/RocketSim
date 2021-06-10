@@ -2,7 +2,7 @@ appdirs==1.4.3
 astroid==2.3.3
 attrs==19.3.0
 Click==7.0
-fastapi==0.48.0
+fastapi==0.65.2
 filelock==3.0.12
 h11==0.9.0
 httptools==0.0.13
